@@ -1,13 +1,15 @@
 #include "main.h"
 
-/**
- * main - the entry point
- * Return: 0 on success
- */
-
 int main(void)
 {
-	runShell();
+	char comnd[170];
+
+	while (true)
+	{
+		start_the_prompt();
+		scan_command(comnd, sizeof(comnd));
+		execute_command(comnd);
+	}
+
 	return (0);
 }
-
