@@ -14,7 +14,6 @@ void executeCommand(char *command)
 {
 	char *args[MAX_ARG_COUNT];
 	int arg_count = 0;
-
 	char *token = strtok(command, " ");
 
 	while (token != NULL)
@@ -24,7 +23,6 @@ void executeCommand(char *command)
 		token = strtok(NULL, " ");
 	}
 	args[arg_count] = NULL;
-
 	if (arg_count > 0)
 	{
 		pid_t pid = fork();
@@ -37,18 +35,14 @@ void executeCommand(char *command)
 		{
 
 			if (access(args[0], X_OK) == 0)
-			{
 				char *env[] = {NULL};
 
 				execve(args[0], args, env);
 				perror("execve");
 				exit(EXIT_FAILURE);
-			}
 			else
-			{
 				fprintf(stderr, "%s: command not found\n", args[0]);
 				exit(EXIT_FAILURE);
-			}
 		}
 		else
 		{
