@@ -11,7 +11,7 @@
 
 void readInput(char *input, int inputSize)
 {
-	printf("$ ");
+	newPrintf("$ ");
 
 	if (fgets(input, inputSize, stdin) == NULL)
 	{
