@@ -5,6 +5,8 @@
 
 #define MAX_ARG_COUNT 64
 
+extern char **environ;
+
 /**
  * executeCommand - function that write a command
  * @command: character to write a command
