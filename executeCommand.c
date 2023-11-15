@@ -1,6 +1,7 @@
 #include "main.h"
 #include <stdio.h>
 #include <errno.h>
+#include <unistd.h>
 
 #define MAX_ARG_COUNT 64
 
