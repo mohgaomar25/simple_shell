@@ -12,9 +12,8 @@
 
 void executeCommand(char *command)
 {
-	char *args[MAX_ARG_COUNT];
-	int arg_count = 0;
-	char *token = strtok(command, " ");
+	char *args[MAX_ARG_COUNT], *token = strtok(command, " ");
+	int arg_count = 0, status;
 
 	while (token != NULL)
 	{
@@ -28,26 +27,26 @@ void executeCommand(char *command)
 		pid_t pid = fork();
 
 		if (pid < 0)
-		{
 			perror("fork");
-		}
 		else if (pid == 0)
 		{
 
 			if (access(args[0], X_OK) == 0)
+			{
 				char *env[] = {NULL};
 
 				execve(args[0], args, env);
 				perror("execve");
 				exit(EXIT_FAILURE);
+			}
 			else
+			{
 				fprintf(stderr, "%s: command not found\n", args[0]);
 				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
-			int status;
-
 			wait(&status);
 		}
 	}
