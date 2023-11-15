@@ -3,10 +3,6 @@
 void execute_command(const char *comnd)
 {
 	pid_t childpid = fork();
-	int i = 0;
-	char *token;
-	char **argv;
-	int argc = 0;
 	if (childpid == -1)
 	{
 		perror("fork");
@@ -14,43 +10,24 @@ void execute_command(const char *comnd)
 	}
 	else if (childpid == 0)
 	{
-		token = strtok((char *)comnd, " \n");
+		char *argv[64];
+		int argc = 0;
+		char *token = strtok((char *)command, " \n");
 		
 		while (token)
 		{
-			argc++;
+			argv[argc++] = token;
 			token = strtok(NULL, " \n");
 		}
-
-		argv = malloc(sizeof(char *) * (argc + 1));
-		if (argv == NULL)
-		{
-			perror("malloc");
-			exit(EXIT_FAILURE);
-		}
+		argv[argc] = NULL;
 		
-		token = strtok((char *)comnd, " \n");
-
-		while (token)
-		{
-			argv[i] = strdup(token);
-			if (argv[i] == NULL)
-			{
-				perror("strdup");
-				exit(EXIT_FAILURE);
-			}
-			token = strtok(NULL, " \n");
-			i++;
-		}
-		argv[i] = NULL;
-
-		execve(argv[0], argv, NULL);
-		perror("execve");
-		
+		execvp(argv[0], argv);
+		perror("execvp");
 		exit(EXIT_FAILURE);
 	}
 	else
 	{
 		wait(NULL);
 	}
+
 }
