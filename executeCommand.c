@@ -3,8 +3,6 @@
 #include <errno.h>
 #include <unistd.h>
 
-#define MAX_ARG_COUNT 64
-
 
 /**
  * executeCommand - function that write a command
@@ -14,6 +12,7 @@
 
 void executeCommand(char *command)
 {
+	int MAX_ARG_COUNT = 64;
 	char *args[MAX_ARG_COUNT];
 	int arg_count = 0;
 
