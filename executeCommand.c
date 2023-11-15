@@ -10,45 +10,43 @@
  * Return: void
  */
 
-void executeCommand(char *command)
+void executeCommand(char *command) 
 {
-	char *args[MAX_ARG_COUNT], *token = strtok(command, " ");
-	int arg_count = 0, status;
-
-	while (token != NULL)
-	{
-		args[arg_count] = token;
-		arg_count++;
-		token = strtok(NULL, " ");
-	}
-	args[arg_count] = NULL;
-	if (arg_count > 0)
-	{
-		pid_t pid = fork();
-
-		if (pid < 0)
-			perror("fork");
-		else if (pid == 0)
-		{
-
-			if (access(args[0], X_OK) == 0)
-			{
-				char *env[] = {NULL};
-
-				execve(args[0], args, env);
-				perror("execve");
-				exit(EXIT_FAILURE);
-			}
-			else
-			{
-				fprintf(stderr, "%s: command not found\n", args[0]);
-				exit(EXIT_FAILURE);
-			}
-		}
-		else
-		{
-			wait(&status);
-		}
-	}
-
+    char *args[MAX_ARG_COUNT];
+    int arg_count = 0;
+    
+    for (char *token = strtok(command, " "); token; token = strtok(NULL, " "))
+    {
+	    args[arg_count++] = token;
+    }
+    args[arg_count] = NULL;
+    
+    if (arg_count > 0)
+    {
+	    pid_t pid = fork();
+	    
+	    if (pid < 0)
+	    {
+		    perror("fork");
+	    }
+	    else if (pid == 0)
+	    {
+		    execve(args[0], args, environ);
+		    
+		    for (char *dir = getenv("PATH"); dir; dir = strtok(NULL, ":"))
+		    {
+			    char *full_path = malloc(strlen(dir) + strlen(args[0]) + 2);
+			    sprintf(full_path, "%s/%s", dir, args[0]);
+			    if (access(full_path, F_OK) == 0) execve(full_path, args, environ);
+			    free(full_path);
+		    }
+		    fprintf(stderr, "%s: command not found\n", args[0]);
+		    exit(EXIT_FAILURE);
+	    }
+	    else
+	    {
+		    int status;
+		    wait(&status);
+	    }
+    }
 }
