@@ -8,6 +8,7 @@
 #include <errno.h>
 #include <stddef.h>
 
+void newPrintf(const char *c);
 void readInput(char *input, int inputSize);
 void executeEnv(void);
 void executeCommand(char *command);
