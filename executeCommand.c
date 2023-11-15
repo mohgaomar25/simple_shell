@@ -24,6 +24,7 @@ void executeCommand(char *command)
 		token = strtok(NULL, " ");
 	}
 	args[arg_count] = NULL;
+
 	if (arg_count > 0)
 	{
 		pid_t pid = fork();
@@ -34,9 +35,20 @@ void executeCommand(char *command)
 		}
 		else if (pid == 0)
 		{
-			execv("/bin/ls", args);
-			perror("execv");
-			exit(EXIT_FAILURE);
+
+			if (access(args[0], X_OK) == 0)
+			{
+				char *env[] = {NULL};
+
+				execve(args[0], args, env);
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
+			else
+			{
+				fprintf(stderr, "%s: command not found\n", args[0]);
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
@@ -45,4 +57,5 @@ void executeCommand(char *command)
 			wait(&status);
 		}
 	}
+
 }
