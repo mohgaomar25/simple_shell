@@ -12,8 +12,7 @@
 
 void executeCommand(char *command)
 {
-	int MAX_ARG_COUNT = 64;
-	char *args[MAX_ARG_COUNT];
+	char *args[64];
 	int arg_count = 0;
 
 	char *token = strtok(command, " ");
