@@ -14,7 +14,7 @@ void executeEnv(void)
 
 	while (env_var)
 	{
-		newPrintf("%s\n", env_var);
+		printf("%s\n", env_var);
 		env_var = *(environ++);
 	}
 }
