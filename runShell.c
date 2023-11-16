@@ -16,16 +16,26 @@ void runShell(void)
 	{
 		readInput(input, sizeof(input));
 		input[strcspn(input, "\n")] = '\0';
+
 		if (strcmp(input, "env") == 0)
 		{
 			executeEnv();
 		}
-		else if (strcmp(input, "exit") == 0)
+		else if (strncmp(input, "exit", 4) == 0)
 		{
-			printf("Exiting shell\n");
-			_exit(0);
+			if (strlen(input) == 4)
+			{
+				printf("Exiting shell\n");
+				_exit(0);
+			}
+			else
+			{
+				printf("Exit: Illegal number of arguments\n");
+			}
 		}
 		else
+		{
 			executeCommand(input);
+		}
 	}
 }
