@@ -34,9 +34,13 @@ void executeCommand(char *command)
 		}
 		else if (pid == 0)
 		{
-			execv("/bin/ls", args);
-			perror("execv");
-			exit(EXIT_FAILURE);
+			char *envp[] = {NULL};
+
+			if (execve(args[0], args, envp) == -1)
+			{
+				perror("execve");
+				exit(EXIT_FAILURE);
+			}
 		}
 		else
 		{
