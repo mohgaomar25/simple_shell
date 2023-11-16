@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include "main.h"
+#include <unistd.h>
+#include <stdlib.h>
 
 
 /**
@@ -9,12 +11,11 @@
 
 void executeEnv(void)
 {
-	char **environ = NULL;
-	char *env_var = *environ;
+	char **env_var = environ;
 
-	while (env_var)
+	while (*env_var != NULL)
 	{
-		printf("%s\n", env_var);
-		env_var = *(environ++);
+		printf("%s\n", *env_var);
+		env_var++;
 	}
 }

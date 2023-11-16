@@ -10,6 +10,8 @@
 #include <stddef.h>
 #include <stdbool.h>
 
+extern char **environ;
+
 void newPrintf(const char *c);
 void readInput(char *input, int inputSize);
 void executeEnv(void);
